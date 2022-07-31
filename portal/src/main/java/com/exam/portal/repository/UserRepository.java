@@ -8,5 +8,5 @@ import com.exam.portal.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    User findByUserName(String username);
+    User findByUsername(String username);
 }
