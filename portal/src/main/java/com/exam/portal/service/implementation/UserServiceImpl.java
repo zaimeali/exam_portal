@@ -1,46 +1,35 @@
 package com.exam.portal.service.implementation;
 
-import java.util.Set;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.stereotype.Service;
 
 import com.exam.portal.entity.User;
-import com.exam.portal.entity.UserRole;
-import com.exam.portal.repository.RoleRepository;
 import com.exam.portal.repository.UserRepository;
+import com.exam.portal.service.UserService;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
+    @Override
+    public User createUser(User user) {
+
+        return userRepository.save(user);
+    }
 
     @Override
-    public User createUser(User user, Set<UserRole> userRoles) throws Exception {
-        
-        User local = userRepository.findByUsername(user.getUsername());
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 
-        if(local != null) {
-            System.out.println("User already exists");
-
-            throw new ResponseStatusException(
-                HttpStatusCode.valueOf(401),
-                "User with this username already exists"
-            );
-        } else {
-            for(UserRole ur : userRoles) {
-                roleRepository.save(ur.getRole());
-            }
-
-            user.getUserRoles().addAll(userRoles);
-            local = userRepository.save(user);
-        }
-
-        return local;
+    @Override
+    public Optional<User> findUserByID(Long id) {
+        return userRepository.findById(id);
     }
     
 }
