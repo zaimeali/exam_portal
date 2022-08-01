@@ -11,4 +11,6 @@ public interface RoleService {
     Role createRole(Role role);
 
     Role findByID(Long id);
+
+    Role findByName(String name);
 }
