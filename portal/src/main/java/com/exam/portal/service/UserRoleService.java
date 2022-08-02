@@ -18,4 +18,6 @@ public interface UserRoleService {
     List<UserRole> findUserRolesByUserID(User user);
 
     boolean deleteUserRoles(List<UserRole> userRoles);
+
+    boolean deleteUserRoleByID(Long id);
 }
