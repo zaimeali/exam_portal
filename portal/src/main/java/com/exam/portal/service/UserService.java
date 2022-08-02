@@ -11,5 +11,7 @@ public interface UserService {
     
     User createUser(User user) throws Exception;
 
+    User updateUser(User user) throws Exception;
+
     Optional<User> findUserByID(Long id);
 }

@@ -1,6 +1,7 @@
 package com.exam.portal.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.exam.portal.entity.Role;
 
@@ -10,7 +11,7 @@ public interface RoleService {
     
     Role createRole(Role role);
 
-    Role findByID(Long id);
+    Optional<Role> findRoleByID(Long id);
 
     Role findByName(String name);
 }

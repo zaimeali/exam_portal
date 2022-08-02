@@ -10,28 +10,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.exam.portal.entity.User;
-import com.exam.portal.service.implementation.UserServiceImpl;
+import com.exam.portal.entity.Role;
+import com.exam.portal.service.implementation.RoleServiceImpl;
 
 @RestController
-@RequestMapping("/users")
-public class UserController {
-
-    @Autowired
-    UserServiceImpl userServiceImpl;
+@RequestMapping("/roles")
+public class RoleController {
     
+    @Autowired
+    RoleServiceImpl roleServiceImpl;
+
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userServiceImpl.createUser(user);
+    public Role createRole(@RequestBody Role role) {
+        return roleServiceImpl.createRole(role);
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userServiceImpl.getAllUsers();
+    public List<Role> getAllRoles() {
+        return roleServiceImpl.getAllRoles();
     }
 
     @GetMapping("/{id}")
-    public User getUserByID(@PathVariable Long id) {
-        return userServiceImpl.findUserByID(id).get();
+    public Role getRoleByID(@PathVariable Long id) {
+        return roleServiceImpl.findRoleByID(id).get();
     }
 }

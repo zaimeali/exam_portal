@@ -13,7 +13,6 @@ import org.springframework.web.server.ResponseStatusException;
 import com.exam.portal.entity.Role;
 import com.exam.portal.entity.User;
 import com.exam.portal.entity.UserRole;
-import com.exam.portal.repository.RoleRepository;
 import com.exam.portal.repository.UserRepository;
 import com.exam.portal.service.UserService;
 
@@ -67,12 +66,47 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        try {
+            return userRepository.findAll();
+        } catch (Exception err) {
+            throw new ResponseStatusException(
+                HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
     }
 
     @Override
     public Optional<User> findUserByID(Long id) {
-        return userRepository.findById(id);
+        Optional<User> user = userRepository.findById(id);
+
+        if(user.isEmpty()) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "No User Found"
+            );
+        }
+
+        return user;
+    }
+
+    @Override
+    public User updateUser(User user) throws Exception {
+        try {
+            Long id = user.getId();
+
+            if(userRepository.findById(id).isEmpty()) {
+                throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "User not exist"
+                );
+            }
+
+            return userRepository.save(user);
+        } catch (Exception err) {
+            throw new ResponseStatusException(
+                HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
     }
     
 }

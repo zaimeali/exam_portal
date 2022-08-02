@@ -1,0 +1,1 @@
+https://stackoverflow.com/questions/71076121/why-hibernate-error-when-get-data-many-to-many-in-hibernate-jpa
