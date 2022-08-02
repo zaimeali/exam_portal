@@ -30,6 +30,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
+
+        Optional<User> isExistUser = userRepository.findByUsername(user.getUsername());
+
+        if(isExistUser.isPresent()) {
+            throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Username already exist"
+            );
+        }
+
         List<Role> roles = roleServiceImpl.getAllRoles();
 
         if(roles.isEmpty()) {
@@ -102,6 +112,48 @@ public class UserServiceImpl implements UserService {
             }
 
             return userRepository.save(user);
+        } catch (Exception err) {
+            throw new ResponseStatusException(
+                HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    @Override
+    public User findUserByUsername(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+
+        if(user.isEmpty()) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "No user exist with this username"
+            );
+        }
+
+        return user.get();
+    }
+
+    @Override
+    public boolean deleteUserByID(Long id) {
+        try {
+
+            Optional<User> user = userRepository.findById(id);
+
+            if(user.isEmpty()) {
+                throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "No user found with the provided ID"
+                );
+            }
+
+            List<UserRole> userRoles = userRoleServiceImpl.findUserRolesByUserID(user.get());
+            
+            if(userRoles.size() > 0) {
+                userRoleServiceImpl.deleteUserRoles(userRoles);
+            }
+
+            userRepository.deleteById(id);
+            return true;
         } catch (Exception err) {
             throw new ResponseStatusException(
                 HttpStatus.INTERNAL_SERVER_ERROR

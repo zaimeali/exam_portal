@@ -14,4 +14,8 @@ public interface UserRoleService {
     UserRole createUserRole(User user, Role role);
 
     Optional<UserRole> findUserRoleByID(Long id);
+
+    List<UserRole> findUserRolesByUserID(User user);
+
+    boolean deleteUserRoles(List<UserRole> userRoles);
 }

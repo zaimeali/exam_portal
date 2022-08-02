@@ -34,4 +34,9 @@ public class RoleController {
     public Role getRoleByID(@PathVariable Long id) {
         return roleServiceImpl.findRoleByID(id).get();
     }
+
+    @GetMapping("/name/{name}")
+    public Role getRoleByName(@PathVariable String name) {
+        return roleServiceImpl.findByName(name);
+    }
 }

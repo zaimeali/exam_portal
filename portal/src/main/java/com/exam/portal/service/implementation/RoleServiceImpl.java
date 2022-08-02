@@ -22,6 +22,17 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role createRole(Role role) {
         try {
+            Optional<Role> isExistRole = roleRepository.findByName(role.getName().toUpperCase());
+
+            if(isExistRole.isPresent()) {
+                throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Role already exist"
+                );
+            }
+
+            role.setName(role.getName().toUpperCase());
+
             return roleRepository.save(role);
         } catch (Exception err) {
             throw new ResponseStatusException(
@@ -64,7 +75,16 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role findByName(String name) {
-        return roleRepository.findByName(name);
+        Optional<Role> role = roleRepository.findByName(name.toUpperCase());
+
+        if(role.isEmpty()) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "No role found with that name"
+            );
+        }
+
+        return role.get();
     }
     
 }

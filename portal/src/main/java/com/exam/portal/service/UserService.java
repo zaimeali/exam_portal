@@ -14,4 +14,8 @@ public interface UserService {
     User updateUser(User user) throws Exception;
 
     Optional<User> findUserByID(Long id);
+
+    User findUserByUsername(String username);
+
+    boolean deleteUserByID(Long id);
 }
