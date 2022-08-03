@@ -57,13 +57,6 @@ public class UserServiceImpl implements UserService {
         Set<UserRole> userRoles = new HashSet<>();
 
         userRoles.add(userRole);
-        
-        if(user.is_admin()) {
-            Role admin = roleServiceImpl.findByName("ADMIN");
-            UserRole adminRole = new UserRole();
-            adminRole.setRole(admin);
-            userRoles.add(adminRole);
-        }
 
         User createdUser = userRepository.save(user);
 

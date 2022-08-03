@@ -14,8 +14,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -53,14 +51,11 @@ public class User {
     @NotBlank
     private String email;
 
+    private String phone;
+
     private String profile;
 
     private boolean is_enabled = true;
-
-    @JsonProperty
-    @JsonIgnore
-    @JsonSetter
-    private boolean is_admin = false;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     @JsonIgnore
