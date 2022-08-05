@@ -58,6 +58,8 @@ public class UserServiceImpl implements UserService {
 
         userRoles.add(userRole);
 
+        user.setProfile("default.png");
+
         User createdUser = userRepository.save(user);
 
         for(UserRole ur : userRoles) {
