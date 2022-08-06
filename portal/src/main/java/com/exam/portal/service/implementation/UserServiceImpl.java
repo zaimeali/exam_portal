@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(User user) {
 
-        Optional<User> isExistUser = userRepository.findByUsername(user.getUsername());
+        Optional<User> isExistUser = userRepository.findByUsername(user.getUsername().toLowerCase());
 
         if(isExistUser.isPresent()) {
             throw new ResponseStatusException(
@@ -58,6 +58,8 @@ public class UserServiceImpl implements UserService {
 
         userRoles.add(userRole);
 
+        user.setEmail(user.getEmail().toLowerCase());
+        user.setUsername(user.getUsername().toLowerCase());
         user.setProfile("default.png");
 
         User createdUser = userRepository.save(user);
