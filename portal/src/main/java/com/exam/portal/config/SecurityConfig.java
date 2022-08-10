@@ -24,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Autowired
-    UnauthorizedHandler unauthorizedHandler;
+    JwtAuthenticationEntryPoint unauthorizedHandler;
 
     @Autowired
     JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -55,6 +55,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.addFilter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
