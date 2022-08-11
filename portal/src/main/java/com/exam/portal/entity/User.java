@@ -18,6 +18,7 @@ import javax.validation.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.exam.portal.PortalApplication;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
@@ -70,6 +71,14 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         Set<Authority> set = new HashSet<>();
+
+        if(this.userRoles.isEmpty()) {
+            PortalApplication mainClass = new PortalApplication();
+            UserRole userRole = new UserRole();
+            userRole.setRole(mainClass.getCommonRole());
+            this.userRoles.add(userRole);
+        }
+
         this.userRoles.forEach((userRole) -> {
             set.add(new Authority(userRole.getRole().getName()));
         });
@@ -80,7 +89,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
@@ -95,6 +104,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
