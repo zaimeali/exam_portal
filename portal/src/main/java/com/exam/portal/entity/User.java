@@ -4,21 +4,22 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.exam.portal.PortalApplication;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
@@ -63,28 +64,28 @@ public class User implements UserDetails {
 
     private boolean is_enabled = true;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "user_roles",
+        joinColumns = @JoinColumn(name = "id")
+    )
     @JsonIgnore
-    private Set<UserRole> userRoles;
+    private Set<Role> userRoles = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        Set<Authority> set = new HashSet<>();
-
-        if(this.userRoles.isEmpty()) {
-            PortalApplication mainClass = new PortalApplication();
-            UserRole userRole = new UserRole();
-            userRole.setRole(mainClass.getCommonRole());
-            this.userRoles.add(userRole);
-        }
+        Set<SimpleGrantedAuthority> set = new HashSet<>();
 
         this.userRoles.forEach((userRole) -> {
-            set.add(new Authority(userRole.getRole().getName()));
+            set.add(new SimpleGrantedAuthority(userRole.getName()));
         });
          
-
         return set;
+    }
+
+    public void addUserRole(Role role) {
+        this.userRoles.add(role);
     }
 
     @Override

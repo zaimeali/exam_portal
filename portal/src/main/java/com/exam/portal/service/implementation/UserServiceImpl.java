@@ -1,9 +1,7 @@
 package com.exam.portal.service.implementation;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +10,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.exam.portal.entity.Role;
 import com.exam.portal.entity.User;
-import com.exam.portal.entity.UserRole;
 import com.exam.portal.repository.UserRepository;
 import com.exam.portal.service.UserService;
 
@@ -21,9 +18,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    UserRoleServiceImpl userRoleServiceImpl;
 
     @Autowired
     RoleServiceImpl roleServiceImpl;
@@ -50,23 +44,13 @@ public class UserServiceImpl implements UserService {
         }
 
         Role role = roleServiceImpl.findByName("USER");
-
-        UserRole userRole = new UserRole();
-        userRole.setRole(role);
-
-        Set<UserRole> userRoles = new HashSet<>();
-
-        userRoles.add(userRole);
+        user.addUserRole(role);
 
         user.setEmail(user.getEmail().toLowerCase());
         user.setUsername(user.getUsername().toLowerCase());
         user.setProfile("default.png");
 
         User createdUser = userRepository.save(user);
-
-        for(UserRole ur : userRoles) {
-            userRoleServiceImpl.createUserRole(createdUser, ur.getRole());
-        }
 
         return createdUser;
     }
@@ -141,12 +125,6 @@ public class UserServiceImpl implements UserService {
                     HttpStatus.NOT_FOUND,
                     "No user found with the provided ID"
                 );
-            }
-
-            List<UserRole> userRoles = userRoleServiceImpl.findUserRolesByUserID(user.get());
-            
-            if(userRoles.size() > 0) {
-                userRoleServiceImpl.deleteUserRoles(userRoles);
             }
 
             userRepository.deleteById(id);
