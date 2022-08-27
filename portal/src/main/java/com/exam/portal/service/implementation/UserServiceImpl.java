@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,6 +23,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     RoleServiceImpl roleServiceImpl;
 
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Override
     public User createUser(User user) {
 
@@ -34,6 +38,10 @@ public class UserServiceImpl implements UserService {
             );
         }
 
+        // Encrypting Password
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+
+
         List<Role> roles = roleServiceImpl.getAllRoles();
 
         if(roles.isEmpty()) {
@@ -45,6 +53,9 @@ public class UserServiceImpl implements UserService {
 
         Role role = roleServiceImpl.findByName("USER");
         user.addUserRole(role);
+
+        // Role adminRole = roleServiceImpl.findByName("ADMIN");
+        // user.addUserRole(adminRole);
 
         user.setEmail(user.getEmail().toLowerCase());
         user.setUsername(user.getUsername().toLowerCase());
@@ -135,5 +146,4 @@ public class UserServiceImpl implements UserService {
             );
         }
     }
-    
 }

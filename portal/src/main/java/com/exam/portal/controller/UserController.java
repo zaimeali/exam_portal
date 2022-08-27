@@ -43,6 +43,11 @@ public class UserController {
         return userServiceImpl.findUserByUsername(username);
     }
 
+    // @GetMapping("/roles/{username}")
+    // public List<Role> getUserRoles(@PathVariable String username) {
+    //     return userServiceImpl.getUserRoles(username);
+    // }
+
     @DeleteMapping("/{id}")
     public boolean deleteUserByID(@PathVariable Long id) {
         return userServiceImpl.deleteUserByID(id);
