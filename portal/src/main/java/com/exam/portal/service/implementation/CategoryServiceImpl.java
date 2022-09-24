@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.exam.portal.entity.exam.Category;
@@ -28,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Set<Category> getAllCategories() {
-        return new HashSet<>(categoryRepository.findAll());
+        return new HashSet<>(categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "categoryID")));
     }
 
     @Override
