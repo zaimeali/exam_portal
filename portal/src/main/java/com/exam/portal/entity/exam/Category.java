@@ -1,6 +1,6 @@
 package com.exam.portal.entity.exam;
 
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -18,7 +18,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -27,7 +26,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @Data
 @ToString
-@EqualsAndHashCode
 @Table(name = "categories")
 public class Category {
     
@@ -43,10 +41,9 @@ public class Category {
     private String description;
 
     @OneToMany(
-        mappedBy = "category", 
-        fetch = FetchType.EAGER, 
+        fetch = FetchType.LAZY, 
         cascade = CascadeType.ALL
     )
     @JsonIgnore
-    private Set<Quiz> quizzes = new LinkedHashSet<>();
+    private Set<Quiz> quizzes = new HashSet<>();
 }

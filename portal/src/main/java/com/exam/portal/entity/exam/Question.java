@@ -12,7 +12,6 @@ import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -21,7 +20,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @Data
 @ToString
-@EqualsAndHashCode
 @Table(name = "questions")
 public class Question {
     

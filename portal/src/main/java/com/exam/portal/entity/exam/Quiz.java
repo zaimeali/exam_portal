@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -28,7 +27,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @Data
 @ToString
-@EqualsAndHashCode
 @Table(name = "quizzes")
 public class Quiz {
     
@@ -44,10 +42,10 @@ public class Quiz {
     private String description;
 
     @NotBlank
-    private long maxMarks;
+    private String maxMarks;
 
     @NotBlank
-    private long numberOfQuestions;
+    private String numberOfQuestions;
 
     private boolean active = false;
 
@@ -55,7 +53,6 @@ public class Quiz {
     private Category category;
 
     @OneToMany(
-        mappedBy = "quiz",
         fetch = FetchType.LAZY,
         cascade = CascadeType.ALL
     )
