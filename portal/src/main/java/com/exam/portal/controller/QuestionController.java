@@ -69,6 +69,8 @@ public class QuestionController {
         Set<Question> questions = questionServiceImpl.getQuestionsOfQuiz(quiz); 
 
         List<Question> questionList = new ArrayList<>(questions);
+        
+        Collections.shuffle(questionList);
 
         if(questionList.size() > Integer.parseInt("" + quiz.getNumberOfQuestions())) {
             questionList = questionList.subList(0, Integer.parseInt("" + quiz.getNumberOfQuestions()) + 1);
