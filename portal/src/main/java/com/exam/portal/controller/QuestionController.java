@@ -83,6 +83,16 @@ public class QuestionController {
         );
     }
 
+    @GetMapping("/quiz/admin/{quizID}")
+    public ResponseEntity<Set<Question>> getQuestionByQuizIDbyAdmin(@PathVariable("quizID") Long quizID) {
+        Quiz quiz = new Quiz();
+        quiz.setQuizID(quizID);
+
+        return ResponseEntity.ok(
+            questionServiceImpl.getQuestionsOfQuiz(quiz)
+        );        
+    }
+
     @GetMapping("/{questionID}")
     public ResponseEntity<Question> getQuestionByID(@PathVariable("questionID") Long questionID) {
         return ResponseEntity.ok(
