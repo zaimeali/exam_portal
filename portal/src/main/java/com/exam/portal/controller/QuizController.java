@@ -57,4 +57,30 @@ public class QuizController {
     public void deleteQuizByID(@PathVariable("quizID") Long quizID) {
         quizServiceImpl.deleteQuizByID(quizID);
     }
+
+    @GetMapping("/category/{categoryID}")
+    public ResponseEntity<Set<Quiz>> getQuizzesOfCategory(
+        @PathVariable("categoryID") Long categoryID
+    ) {
+        return ResponseEntity.ok(
+            this.quizServiceImpl.getQuizzesOfCategory(categoryID)
+        );
+    }
+
+    @GetMapping("/active")
+    public ResponseEntity<Set<Quiz>> getActiveQuizzes() {
+        return ResponseEntity.ok(
+            this.quizServiceImpl.getActiveQuizzes()
+        );
+    }
+
+    @GetMapping("/category/{categoryID}/active")
+    public ResponseEntity<Set<Quiz>> getActiveQuizzesOfCategory(
+        @PathVariable("categoryID") Long categoryID
+    ) {
+        return ResponseEntity.ok(
+            this.quizServiceImpl.getActiveQuizzesByCategory(categoryID)
+        );
+    }
+
 }

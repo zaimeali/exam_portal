@@ -15,4 +15,10 @@ public interface QuizService {
     public Quiz getQuizByID(Long id);
 
     public void deleteQuizByID(Long id);
+
+    public Set<Quiz> getQuizzesOfCategory(Long categoryID);
+
+    public Set<Quiz> getActiveQuizzes();
+
+    public Set<Quiz> getActiveQuizzesByCategory(Long categoryID);
 }

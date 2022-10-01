@@ -38,6 +38,7 @@ public class Quiz {
     @NotBlank
     private String title;
 
+    @Column(length = 1000)
     @NotBlank
     private String description;
 
