@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,10 +74,15 @@ public class QuestionController {
         Collections.shuffle(questionList);
 
         if(questionList.size() > Integer.parseInt("" + quiz.getNumberOfQuestions())) {
-            questionList = questionList.subList(0, Integer.parseInt("" + quiz.getNumberOfQuestions()) + 1);
+            questionList = questionList.subList(0, Integer.parseInt("" + quiz.getNumberOfQuestions()));
         }
 
         Collections.shuffle(questionList);
+
+        // to hide answer from list
+        // questionList.forEach((question) -> {
+        //     question.setAnswer("");
+        // });
 
         return ResponseEntity.ok(
             new HashSet<>(questionList)
@@ -103,5 +109,46 @@ public class QuestionController {
     @DeleteMapping("/{questionID}")
     public void deleteQuestionByID(@PathVariable("questionID") Long questionID) {
         questionServiceImpl.deleteQuestionByID(questionID);
+    }
+
+    @PostMapping("/eval-quiz")
+    public ResponseEntity<?> evalQuiz(@RequestBody List<Question> questions) {
+
+        double marksScored = 0;
+        int correctAnswers = 0;
+        int attempted = questions.size();
+        double totalMarks = 0;
+
+        for(Question question : questions) {
+            Question exactQuestion = this.questionServiceImpl.getQuestionByID(question.getQuestionID());
+
+            if(exactQuestion.getAnswer().equals(question.getGivenAnswer())) {
+                correctAnswers++;
+
+                if(totalMarks == 0 || totalMarks == 0.0)
+                    totalMarks = Double.parseDouble(questions.get(0).getQuiz().getMaxMarks());
+
+                double marksSingle = totalMarks / questions.size();
+
+                System.out.println(marksSingle);
+
+                marksScored += marksSingle;
+            } 
+
+            if(question.getGivenAnswer().equals("") || question.getGivenAnswer() == null) {
+                attempted--;
+            }
+        };
+
+        Map<Object, Object> scoredMap = Map.of(
+            "marksScored", ((marksScored / totalMarks) * 100), 
+            "correctAnswers", correctAnswers, 
+            "attempted", attempted,
+            "maxMarks", totalMarks
+        );
+
+        return ResponseEntity.ok(
+            scoredMap
+        );
     }
 }

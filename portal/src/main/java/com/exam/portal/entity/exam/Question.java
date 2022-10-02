@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
@@ -35,6 +36,9 @@ public class Question {
 
     @NotBlank
     private String answer;
+
+    @Transient // will not add this field in the dB
+    private String givenAnswer = "";
 
     private String option1;
     private String option2;
